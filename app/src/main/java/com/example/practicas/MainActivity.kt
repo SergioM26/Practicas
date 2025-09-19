@@ -36,12 +36,14 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.dp
 import com.example.practicas.ui.theme.PracticasTheme
+import kotlin.toString
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,9 +55,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting(
-                        name = "Nombre",
-                    )
+                    Calculadora()
                 }
             }
         }
@@ -63,11 +63,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
+fun Calculadora() {
 
     var currentInput by remember { mutableStateOf(TextFieldValue("")) }
-    var previusValue by remember { mutableStateOf<Double?>(null)}
-    var answer by remember { mutableStateOf(TextFieldValue("")) }
+    var previousValue by remember { mutableStateOf<Double?>(null) }
+    var operator by remember { mutableStateOf<String?>(null)}
 
     Column(
         modifier = Modifier.fillMaxHeight(),
@@ -78,9 +78,13 @@ fun Greeting(name: String) {
             modifier = Modifier.fillMaxWidth().weight(1.5f),
         ) {
             TextField(
-                value =currentInput,
-                onValueChange = { currentInput= it },
-                modifier = Modifier.fillMaxWidth().fillMaxHeight()
+                value = currentInput,
+                onValueChange = { currentInput = it },
+                modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                textStyle = TextStyle(
+                    fontSize = 48.sp,
+                    textAlign = TextAlign.Right,
+                )
             )
         }
 
@@ -89,19 +93,42 @@ fun Greeting(name: String) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = { },
+                onClick = {
+                    currentInput = TextFieldValue("")
+                    previousValue = null
+                    operator = null
+                },
                 modifier = Modifier.weight(1f).fillMaxHeight(.7f)
             ) {
                 Text("C", modifier = Modifier.scale(1.7f))
             }
+
             Button(
-                onClick = { },
+                onClick = {
+                    if (previousValue != null && operator != null && currentInput.text.isNotEmpty()) {
+                        previousValue = when (operator) {
+                            "+" -> previousValue!! + currentInput.text.toDouble()
+                            "-" -> previousValue!! - currentInput.text.toDouble()
+                            "*" -> previousValue!! * currentInput.text.toDouble()
+                            "/" -> previousValue!! / currentInput.text.toDouble()
+                            else -> currentInput.text.toDouble()
+                        }
+                        currentInput = TextFieldValue(previousValue.toString())
+                        previousValue = null
+                        operator = null
+                    }
+                },
                 modifier = Modifier.weight(1f).fillMaxHeight(.7f)
             ) {
                 Text("=", modifier = Modifier.scale(1.7f))
             }
+
             Button(
-                onClick = { },
+                onClick = {
+                    if (currentInput.text.isNotEmpty()) {
+                        currentInput = TextFieldValue(currentInput.text.dropLast(1))
+                    }
+                },
                 modifier = Modifier.weight(1f).fillMaxHeight(.7f)
             ) {
                 Image(
@@ -111,64 +138,58 @@ fun Greeting(name: String) {
             }
         }
 
+        fun operatorClick(op: String) {
+            if (previousValue != null && operator != null && currentInput.text.isNotEmpty()) {
+                previousValue = when (operator) {
+                    "+" -> previousValue!! + currentInput.text.toDouble()
+                    "-" -> previousValue!! - currentInput.text.toDouble()
+                    "*" -> previousValue!! * currentInput.text.toDouble()
+                    "/" -> previousValue!! / currentInput.text.toDouble()
+                    else -> currentInput.text.toDouble()
+                }
+            } else if (currentInput.text.isNotEmpty()) {
+                previousValue = currentInput.text.toDouble()
+            }
+            currentInput = TextFieldValue("")
+            operator = op
+        }
+
         // Primera fila: 7, 8, 9, /
         Row(
             modifier = Modifier.fillMaxWidth().weight(1f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(
-                modifier = Modifier.weight(1f).fillMaxHeight(.7f),
-                onClick = {currentInput = currentInput.copy(text = currentInput.text + "7")
+            listOf("7","8","9").forEach { num ->
+                Button(
+                    onClick = { currentInput = currentInput.copy(text = currentInput.text + num) },
+                    modifier = Modifier.weight(1f).fillMaxHeight(.7f)
+                ) {
+                    Text(num, modifier = Modifier.scale(1.7f))
                 }
-
-            ) {
-                Text("7", modifier = Modifier.scale(1.7f))
             }
             Button(
-                onClick = { currentInput = currentInput.copy(text = currentInput.text + "8")},
-                modifier = Modifier.weight(1f).fillMaxHeight(.7f)
-            ) {
-                Text("8", modifier = Modifier.scale(1.7f))
-            }
-            Button(
-                onClick = { currentInput = currentInput.copy(text = currentInput.text + "9")},
-                modifier = Modifier.weight(1f).fillMaxHeight(.7f)
-            ) {
-                Text("9", modifier = Modifier.scale(1.7f))
-            }
-            Button(
-                onClick = { },
+                onClick = { operatorClick("/") },
                 modifier = Modifier.weight(1f).fillMaxHeight(.7f)
             ) {
                 Text("/", modifier = Modifier.scale(1.7f))
             }
         }
 
-        // Segunda fila: 4, 5, 6, X
+        // Segunda fila: 4, 5, 6, *
         Row(
             modifier = Modifier.fillMaxWidth().weight(1f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(
-                onClick = { currentInput = currentInput.copy(text = currentInput.text + "4")},
-                modifier = Modifier.weight(1f).fillMaxHeight(.7f)
-            ) {
-                Text("4", modifier = Modifier.scale(1.7f))
+            listOf("4","5","6").forEach { num ->
+                Button(
+                    onClick = { currentInput = currentInput.copy(text = currentInput.text + num) },
+                    modifier = Modifier.weight(1f).fillMaxHeight(.7f)
+                ) {
+                    Text(num, modifier = Modifier.scale(1.7f))
+                }
             }
             Button(
-                onClick = { currentInput = currentInput.copy(text = currentInput.text + "5")},
-                modifier = Modifier.weight(1f).fillMaxHeight(.7f)
-            ) {
-                Text("5", modifier = Modifier.scale(1.7f))
-            }
-            Button(
-                onClick = { currentInput = currentInput.copy(text = currentInput.text + "6")},
-                modifier = Modifier.weight(1f).fillMaxHeight(.7f)
-            ) {
-                Text("6", modifier = Modifier.scale(1.7f))
-            }
-            Button(
-                onClick = { },
+                onClick = { operatorClick("*") },
                 modifier = Modifier.weight(1f).fillMaxHeight(.7f)
             ) {
                 Text("X", modifier = Modifier.scale(1.7f))
@@ -180,66 +201,56 @@ fun Greeting(name: String) {
             modifier = Modifier.fillMaxWidth().weight(1f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(
-                onClick = { currentInput = currentInput.copy(text = currentInput.text + "1")},
-                modifier = Modifier.weight(1f).fillMaxHeight(.7f)
-            ) {
-                Text("1", modifier = Modifier.scale(1.7f))
+            listOf("1","2","3").forEach { num ->
+                Button(
+                    onClick = { currentInput = currentInput.copy(text = currentInput.text + num) },
+                    modifier = Modifier.weight(1f).fillMaxHeight(.7f)
+                ) {
+                    Text(num, modifier = Modifier.scale(1.7f))
+                }
             }
             Button(
-                onClick = { currentInput = currentInput.copy(text = currentInput.text + "2")},
-                modifier = Modifier.weight(1f).fillMaxHeight(.7f)
-            ) {
-                Text("2", modifier = Modifier.scale(1.7f))
-            }
-            Button(
-                onClick = { currentInput = currentInput.copy(text = currentInput.text + "3")},
-                modifier = Modifier.weight(1f).fillMaxHeight(.7f)
-            ) {
-                Text("3", modifier = Modifier.scale(1.7f))
-            }
-            Button(
-                onClick = { },
+                onClick = { operatorClick("-") },
                 modifier = Modifier.weight(1f).fillMaxHeight(.7f)
             ) {
                 Text("-", modifier = Modifier.scale(1.7f))
             }
         }
 
-        // Cuarta fila: ., 0 , +
+        // Cuarta fila: 0, ., +
         Row(
             modifier = Modifier.fillMaxWidth().weight(1f),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = { currentInput = currentInput.copy(text = currentInput.text + ".")},
+                onClick = { currentInput = currentInput.copy(text = currentInput.text + ".") },
                 modifier = Modifier.weight(1f).fillMaxHeight(.7f)
             ) {
                 Text(".", modifier = Modifier.scale(1.7f))
             }
             Button(
-                onClick = { currentInput = currentInput.copy(text = currentInput.text + "0")},
+                onClick = { currentInput = currentInput.copy(text = currentInput.text + "0") },
                 modifier = Modifier.weight(2f).fillMaxHeight(.7f)
             ) {
                 Text("0", modifier = Modifier.scale(1.7f))
             }
             Button(
-                onClick = { },
+                onClick = { operatorClick("+") },
                 modifier = Modifier.weight(1f).fillMaxHeight(.7f)
             ) {
                 Text("+", modifier = Modifier.scale(1.7f))
             }
         }
     }
-    fun operacion(char: Char){
-        currentInput
-    }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PracticasTheme {
-        Greeting("Sergio Moreno")
+/*
+fun operacion(operador: Char){
+    val previusValue = when (operador) {
+        '+' -> previusValue!!.plus(currentInput.toString().toDouble())
+        '-' -> previusValue!!.rem(currentInput.toString().toDouble())
+        '*' -> previusValue!!.times(currentInput.toString().toDouble())
+        '/' -> previusValue!!.div(currentInput.toString().toDouble())
+        else -> 0
     }
-}
+    //answer = previusValue.toString()
+}*/
