@@ -8,5 +8,6 @@ class TeamsPage (
     val city: String,
     val stadium: String,
     val color: Color,
-    val founded: Int
+    val founded: Int,
+    val datoCurioso: String
 )

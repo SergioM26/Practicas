@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontSynthesis
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -126,6 +127,23 @@ fun HorizontalSlider(
                         text = "Fundado en ${team.founded}",
                         fontSize = 14.sp,
                         fontStyle = FontStyle.Italic
+                    )
+
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Text(
+                        text = "Dato Curioso",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = team.datoCurioso,
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Center
                     )
                 }
             }

@@ -29,7 +29,8 @@ fun TeamOnBoarding(navController: NavController, id: Int, start:Int) {
                 city = "Green Bay",
                 stadium = "Lambeau Field",
                 color = Color(0xFF293E38),
-                founded = 1919
+                founded = 1919,
+                datoCurioso = "Son el único equipo de la NFL que pertenece a sus aficionados."
             )
         )
 
@@ -40,7 +41,8 @@ fun TeamOnBoarding(navController: NavController, id: Int, start:Int) {
                 city = "Philadelphia",
                 stadium = "Lincoln Financial Field",
                 color = Color(0xFF004C54),
-                founded = 1933
+                founded = 1933,
+                datoCurioso = "Su mascota oficial, Swoop, fue presentada en 1996."
             )
         )
 
@@ -51,7 +53,8 @@ fun TeamOnBoarding(navController: NavController, id: Int, start:Int) {
                 city = "Charlotte",
                 stadium = "Bank of America Stadium",
                 color = Color(0xFF0085CA),
-                founded = 1995
+                founded = 1995,
+                datoCurioso = "Su primer partido oficial de temporada lo jugaron en 1995 contra los Atlanta Falcons."
             )
         )
 
@@ -62,7 +65,8 @@ fun TeamOnBoarding(navController: NavController, id: Int, start:Int) {
                 city = "San Francisco",
                 stadium = "Levi's Stadium",
                 color = Color(0xFFAA0000),
-                founded = 1946
+                founded = 1946,
+                datoCurioso = "Fueron el primer equipo de la NFL en ganar cinco Super Bowls."
             )
         )
     } else {
@@ -74,7 +78,8 @@ fun TeamOnBoarding(navController: NavController, id: Int, start:Int) {
                 city = "Cincinnati",
                 stadium = "Paycor Stadium",
                 color = Color(0xFFF9551C),
-                founded = 1968
+                founded = 1968,
+                datoCurioso = "El casco de los Bengals es el único de la NFL que no lleva el logo del equipo, solo rayas de tigre."
             )
         )
 
@@ -85,7 +90,8 @@ fun TeamOnBoarding(navController: NavController, id: Int, start:Int) {
                 city = "Miami",
                 stadium = "Hard Rock Stadium",
                 color = Color(0xFF099098),
-                founded = 1966
+                founded = 1966,
+                datoCurioso = "Son el único equipo en la historia de la NFL con una temporada perfecta (1972)."
             )
         )
 
@@ -96,20 +102,23 @@ fun TeamOnBoarding(navController: NavController, id: Int, start:Int) {
                 city = "Indianapolis",
                 stadium = "Lucas Oil Stadium",
                 color = Color(0xFF0B3B6D),
-                founded = 1953
+                founded = 1953,
+                datoCurioso = "Fueron el primer equipo en tener cheerleaders oficiales en 1954."
             )
         )
-    items.add(
-        TeamsPage(
-            logo = R.drawable.kansas_logo,
-            name = "Kansas City Chiefs",
-            city = "Kansas City",
-            stadium = "Arrowhead Stadium",
-            color = Color(0xFFE42340),
-            founded = 1960
+
+        items.add(
+            TeamsPage(
+                logo = R.drawable.kansas_logo,
+                name = "Kansas City Chiefs",
+                city = "Kansas City",
+                stadium = "Arrowhead Stadium",
+                color = Color(0xFFE42340),
+                founded = 1960,
+                datoCurioso = "Arrowhead Stadium es famoso por ser uno de los estadios más ruidosos del mundo."
+            )
         )
-    )
-}
+    }
         val pagerState  = rememberPagerState(
             pageCount=items.size,
             initialOffscreenLimit =2,
