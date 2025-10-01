@@ -23,6 +23,7 @@ import com.example.practicas.R
 //@Preview
 @Composable
 fun HomeView(navController: NavController){
+    val id = 10;
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
@@ -30,7 +31,8 @@ fun HomeView(navController: NavController){
                     .weight(1f)
                     .fillMaxWidth()
                     .background(Color(0xFF0B3B6D))
-                    .clickable { /* Navegar a AFC */ },
+                    .clickable { navController.navigate("Division/1")
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 Image(
@@ -45,7 +47,8 @@ fun HomeView(navController: NavController){
                     .weight(1f)
                     .fillMaxWidth()
                     .background(Color(0xFFB71C1C))
-                    .clickable { /* Navegar a NFC */ },
+                    .clickable {  navController.navigate("Division/2")},
+
                 contentAlignment = Alignment.Center
             ) {
                 Image(
