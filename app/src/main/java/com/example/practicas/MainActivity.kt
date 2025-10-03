@@ -7,9 +7,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,11 +35,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontSynthesis
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.practicas.ui.theme.PracticasTheme
+import androidx.compose.ui.unit.sp
 
 data class RangoISR(
     val limiteInferior: Double,
@@ -91,7 +102,12 @@ fun interfaz() {
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
+        Text(textAlign = TextAlign.Center, text = "Calculadora ISR", fontSize = 32.sp,fontWeight = FontWeight.Bold)
+
+        Spacer(Modifier.height(40.dp))
+
         OutlinedTextField(
             value = SalarioB,
             onValueChange = { SalarioB = it },
@@ -99,6 +115,7 @@ fun interfaz() {
             placeholder = { Text("Ingrese su sueldo mensual") },
             singleLine = true
         )
+
 
         Button(onClick = {
             val salario = SalarioB.text.toDoubleOrNull() ?: 0.0
@@ -109,22 +126,24 @@ fun interfaz() {
             Text("Calcular")
         }
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "ISR = ", style = MaterialTheme.typography.bodyLarge)
+        Spacer(Modifier.height(20.dp))
+
+            Text(text = "ISR", modifier = Modifier.fillMaxWidth(), fontSize = 16.sp, fontWeight = FontWeight.Bold)
             TextField(
                 value = ISR,
                 onValueChange = { },
-                readOnly = true
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth()
             )
-        }
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Salario Neto = ", style = MaterialTheme.typography.bodyLarge)
+        Spacer(Modifier.height(10.dp))
+
+            Text(text = "Salario Neto", modifier = Modifier.fillMaxWidth(), fontSize = 16.sp, fontWeight = FontWeight.Bold)
             TextField(
                 value = SalarioN,
                 onValueChange = { },
-                readOnly = true
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth()
             )
-        }
     }
 }
